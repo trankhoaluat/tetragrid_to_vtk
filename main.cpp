@@ -13,7 +13,7 @@ void tetrahedral_grid_to_vtk(std::ofstream &stream, const std::vector<double> &c
   const int n_points = coords.size() / 3;
   const int n_cells = connectivities.size() / 4;
 
-  // 0. verify nodes and cells
+  // 1. verify nodes and cells
   if (n_points * 3 != coords.size())
   {
     throw "point coords and total node number are mismatched";
@@ -24,14 +24,14 @@ void tetrahedral_grid_to_vtk(std::ofstream &stream, const std::vector<double> &c
     throw "cell connectivities and total cell number are mismatched";
   }
 
-  // 1. write points
+  // 2. write points
   stream << "POINTS " << n_points << " float\n";
   for (const auto var : coords)
   {
     stream << var << '\n';
   }
 
-  // 2. write mesh
+  // 3. write mesh
   stream << "CELLS " << n_cells /*cell numbers*/ << ' ' << 5 * n_cells /* total number of integer values required to represent the list*/ << '\n';
   for (int i = 0; i < connectivities.size();)
   {
@@ -44,14 +44,6 @@ void tetrahedral_grid_to_vtk(std::ofstream &stream, const std::vector<double> &c
   {
     stream << 10 << '\n'; // tetra type
   }
-
-  // 4. write point data and cell data
-  // user may edit the function signature for point and cell data
-  // stream << "POINT_DATA " << n_points << '\n';
-  // stream << "VECTORS velocity float size?\n";
-  // stream << "CELL_DATA " << n_cells << '\n'
-  //        << "SCALARS color int 1\n"
-  //        << "TABLELOOKUP default"
 }
 
 int main()
